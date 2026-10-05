@@ -257,7 +257,7 @@
       <p id="modalSubtitle" class="text-xs text-slate-400 mt-1 font-semibold">Reward Allocated</p>
 
       <div class="my-4 py-4 bg-black/80 rounded-2xl border border-red-500/30">
-        <span id="modalPrize" class="font-orbitron text-5xl font-black text-yellow-400 tracking-tight filter drop-shadow-[0_0_15px_rgba(250,204,21,0.8)]">$3.00</span>
+        <span id="modalPrize" class="font-orbitron text-5xl font-black text-yellow-400 tracking-tight filter drop-shadow-[0_0_15px_rgba(250,204,21,0.8)]">$4.00</span>
       </div>
 
       <button onclick="closeWinModal(event)" class="cyber-btn w-full py-4 font-fredoka font-black text-white uppercase tracking-widest text-sm">
@@ -283,20 +283,20 @@
 
       <div class="mt-5 space-y-2.5 font-sans">
         <div class="flex justify-between items-center p-3 rounded-xl bg-black/60 border border-slate-800">
-          <span class="text-sm font-bold text-yellow-400">$3.00 Grand Jackpot</span>
-          <span id="prob3" class="font-orbitron text-xs font-black text-yellow-300 bg-yellow-950/80 px-2.5 py-1 rounded border border-yellow-800">45%</span>
+          <span class="text-sm font-bold text-yellow-400">$4.00 Ultimate Jackpot</span>
+          <span id="prob4" class="font-orbitron text-xs font-black text-yellow-300 bg-yellow-950/80 px-2.5 py-1 rounded border border-yellow-800">35%</span>
+        </div>
+        <div class="flex justify-between items-center p-3 rounded-xl bg-black/60 border border-slate-800">
+          <span class="text-sm font-bold text-purple-400">$3.00 Mega Win</span>
+          <span id="prob3" class="font-orbitron text-xs font-black text-purple-300 bg-purple-950/80 px-2.5 py-1 rounded border border-purple-800">35%</span>
         </div>
         <div class="flex justify-between items-center p-3 rounded-xl bg-black/60 border border-slate-800">
           <span class="text-sm font-bold text-blue-400">$2.00 Ultra Win</span>
-          <span id="prob2" class="font-orbitron text-xs font-black text-blue-300 bg-blue-950/80 px-2.5 py-1 rounded border border-blue-800">25%</span>
+          <span id="prob2" class="font-orbitron text-xs font-black text-blue-300 bg-blue-950/80 px-2.5 py-1 rounded border border-blue-800">20%</span>
         </div>
         <div class="flex justify-between items-center p-3 rounded-xl bg-black/60 border border-slate-800">
           <span class="text-sm font-bold text-emerald-400">$1.00 Standard Prize</span>
-          <span id="prob1" class="font-orbitron text-xs font-black text-emerald-300 bg-emerald-950/80 px-2.5 py-1 rounded border border-emerald-800">20%</span>
-        </div>
-        <div class="flex justify-between items-center p-3 rounded-xl bg-black/60 border border-slate-800">
-          <span class="text-sm font-bold text-slate-400">$0.00 Miss</span>
-          <span id="prob0" class="font-orbitron text-xs font-black text-slate-400 bg-slate-900 px-2.5 py-1 rounded border border-slate-800">10%</span>
+          <span id="prob1" class="font-orbitron text-xs font-black text-emerald-300 bg-emerald-950/80 px-2.5 py-1 rounded border border-emerald-800">10%</span>
         </div>
       </div>
 
@@ -365,18 +365,6 @@
           osc.start(now + i * 0.05);
           osc.stop(now + i * 0.05 + 0.5);
         });
-      } else if (type === 'zero') {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(220, now);
-        osc.frequency.exponentialRampToValueAtTime(80, now + 0.3);
-        gain.gain.setValueAtTime(0.2, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start(now);
-        osc.stop(now + 0.3);
       } else if (type === 'shuffle') {
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
@@ -519,32 +507,33 @@
         : "px-3 py-1.5 rounded-lg text-xs font-orbitron font-bold text-red-400 hover:text-white transition-all flex items-center gap-1";
 
       if (mode === 'vip') {
-        document.getElementById('prob3').innerText = "60%";
-        document.getElementById('prob2').innerText = "25%";
-        document.getElementById('prob1').innerText = "10%";
-        document.getElementById('prob0').innerText = "5%";
+        document.getElementById('prob4').innerText = "45%";
+        document.getElementById('prob3').innerText = "35%";
+        document.getElementById('prob2').innerText = "15%";
+        document.getElementById('prob1').innerText = "5%";
       } else {
-        document.getElementById('prob3').innerText = "45%";
-        document.getElementById('prob2').innerText = "25%";
-        document.getElementById('prob1').innerText = "20%";
-        document.getElementById('prob0').innerText = "10%";
+        document.getElementById('prob4').innerText = "35%";
+        document.getElementById('prob3').innerText = "35%";
+        document.getElementById('prob2').innerText = "20%";
+        document.getElementById('prob1').innerText = "10%";
       }
 
       resetStage();
     }
 
+    // المولّد الجديد للقيم المقترحة (4 و 3 بنسب أعلى، بدون 0)
     function generatePrize() {
       const rand = Math.random() * 100;
       if (luckMode === 'vip') {
-        if (rand < 60) return 3.00;
-        if (rand < 85) return 2.00;
-        if (rand < 95) return 1.00;
-        return 0.00;
+        if (rand < 45) return 4.00;  // 45% -> $4.00
+        if (rand < 80) return 3.00;  // 35% -> $3.00
+        if (rand < 95) return 2.00;  // 15% -> $2.00
+        return 1.00;                 // 5%  -> $1.00
       } else {
-        if (rand < 45) return 3.00;  // 45% -> $3.00
-        if (rand < 70) return 2.00;  // 25% -> $2.00
-        if (rand < 90) return 1.00;  // 20% -> $1.00
-        return 0.00;                 // 10% -> $0.00
+        if (rand < 35) return 4.00;  // 35% -> $4.00
+        if (rand < 70) return 3.00;  // 35% -> $3.00
+        if (rand < 90) return 2.00;  // 20% -> $2.00
+        return 1.00;                 // 10% -> $1.00
       }
     }
 
@@ -566,22 +555,22 @@
         card.className = "star-capsule perspective-1000 w-full h-36 sm:h-44 cursor-pointer group";
         card.id = `card-${i}`;
 
-        let textCol = 'text-yellow-400';
-        let bgStyle = 'border-yellow-400/50 bg-yellow-400/10 shadow-[0_0_20px_rgba(250,204,21,0.2)]';
+        let textCol = 'text-emerald-400';
+        let bgStyle = 'border-emerald-500/50 bg-emerald-500/10 shadow-[0_0_20px_rgba(16,185,129,0.2)]';
         
-        if (val === 0) {
-          textCol = 'text-slate-400';
-          bgStyle = 'border-slate-800 bg-slate-950/80';
-        } else if (val === 1) {
-          textCol = 'text-emerald-400';
-          bgStyle = 'border-emerald-500/50 bg-emerald-500/10 shadow-[0_0_20px_rgba(16,185,129,0.2)]';
-        } else if (val === 2) {
+        if (val === 2) {
           textCol = 'text-blue-400';
           bgStyle = 'border-blue-500/50 bg-blue-500/10 shadow-[0_0_20px_rgba(59,130,246,0.2)]';
+        } else if (val === 3) {
+          textCol = 'text-purple-400';
+          bgStyle = 'border-purple-500/50 bg-purple-500/10 shadow-[0_0_20px_rgba(168,85,247,0.2)]';
+        } else if (val === 4) {
+          textCol = 'text-yellow-400';
+          bgStyle = 'border-yellow-400/50 bg-yellow-400/10 shadow-[0_0_20px_rgba(250,204,21,0.2)]';
         }
 
         card.innerHTML = `
-          <div class="relative w-full h-full duration-500 transform-style-3d transition-transform" id="cardInner-${i}">
+          <div class="relative w-full h-full duration-500 transform-style-3d transition-transform ${isRevealed ? 'rotate-y-180' : ''}" id="cardInner-${i}">
             <!-- Front Face: Basic Color Star -->
             <div class="absolute inset-0 w-full h-full rounded-3xl bg-slate-950/90 border-2 ${starDef.border} flex flex-col items-center justify-center backface-hidden shadow-2xl transition-all overflow-hidden ${starDef.bgGlow}">
               <div class="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none"></div>
@@ -595,12 +584,12 @@
             <div id="cardBack-${i}" class="absolute inset-0 w-full h-full rounded-3xl border-2 ${bgStyle} flex flex-col items-center justify-center backface-hidden rotate-y-180 shadow-2xl overflow-hidden">
               <span class="text-[9px] font-fredoka font-black text-slate-500 uppercase tracking-widest">UNLOCKED</span>
               <span class="font-orbitron text-3xl sm:text-4xl font-black ${textCol} my-1 filter drop-shadow">$${val.toFixed(2)}</span>
-              <span class="text-[9px] font-fredoka font-bold ${val > 0 ? 'text-emerald-400' : 'text-slate-500'} tracking-widest uppercase">${val > 0 ? '. REWARD' : 'ZERO WIN'}</span>
+              <span class="text-[9px] font-fredoka font-bold text-emerald-400 tracking-widest uppercase">. REWARD</span>
             </div>
           </div>
         `;
 
-        card.addEventListener('mousemove', (e) => tiltCard(e, card, isRevealed));
+        card.addEventListener('mousemove', (e) => tiltCard(e, card, revealed[i]));
         card.addEventListener('mouseleave', () => resetTilt(card));
         card.onclick = (e) => {
           createRipple(e);
@@ -616,267 +605,184 @@
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left - rect.width / 2;
       const y = e.clientY - rect.top - rect.height / 2;
-      card.style.transform = `perspective(1000px) rotateX(${-y / 5}deg) rotateY(${x / 5}deg) scale3d(1.05, 1.05, 1.05)`;
+      card.style.transform = `perspective(1000px) rotateX(${-y / 8}deg) rotateY(${x / 8}deg) scale(1.03)`;
     }
 
     function resetTilt(card) {
-      card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+      card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`;
     }
 
-    function revealStar(idx) {
-      if (revealed[idx]) return;
+    function revealStar(index) {
+      if (revealed[index]) return;
 
-      playSound('tap');
-      revealed[idx] = true;
+      revealed[index] = true;
+      const val = starValues[index];
+      const starDef = BASIC_STARS[index % BASIC_STARS.length];
+      
+      const cardInner = document.getElementById(`cardInner-${index}`);
+      if (cardInner) cardInner.classList.add('rotate-y-180');
 
-      const inner = document.getElementById(`cardInner-${idx}`);
-      const card = document.getElementById(`card-${idx}`);
-      resetTilt(card);
+      totalPicks++;
+      winsCount++;
+      if (val === 4) jackpotsCount++;
 
-      if (inner) inner.classList.add('rotate-y-180');
+      totalVault += val;
+      updateVaultDisplay();
 
-      const prize = starValues[idx];
-      const starDef = BASIC_STARS[idx % BASIC_STARS.length];
-
-      const rect = card.getBoundingClientRect();
-      const originX = (rect.left + rect.width / 2) / window.innerWidth;
-      const originY = (rect.top + rect.height / 2) / window.innerHeight;
-
-      if (prize > 0) {
-        spawnSparkles(originX, originY, prize === 3);
+      if (val === 4) {
+        playSound('jackpot');
+        confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+      } else {
+        playSound('win');
       }
 
-      totalVault += prize;
-      totalPicks++;
-      if (prize > 0) winsCount++;
-      if (prize === 3) jackpotsCount++;
-
-      animateVaultCounter();
-      updateDashboardStats();
-      pushHistory(prize, starDef.colorName);
-
-      setTimeout(() => {
-        if (prize === 3) {
-          playSound('jackpot');
-          triggerCoinRain();
-          openWinModal("JACKPOT!", "GRAND $3.00 WIN!", prize, "text-yellow-400", starDef.faceSvg);
-        } else if (prize > 0) {
-          playSound('win');
-          const prizeWord = prize === 2 ? "ULTRA WIN $2.00!" : "STANDARD WIN $1.00!";
-          openWinModal(prizeWord, ". PRIZE UNLOCKED", prize, prize === 2 ? "text-blue-400" : "text-emerald-400", starDef.faceSvg);
-        } else {
-          playSound('zero');
-          openWinModal("NO PRIZE $0.00", "ZERO WIN THIS TIME", 0, "text-slate-400", starDef.faceSvg);
-        }
-      }, 400);
+      addToHistory(starDef.colorName, val);
+      updateStatsUI();
+      openWinModal(starDef, val);
     }
 
     function autoPickStar(e) {
-      if (e) createRipple(e);
-      const unrevealed = [];
-      revealed.forEach((r, i) => { if (!r) unrevealed.push(i); });
-
-      if (unrevealed.length === 0) {
+      createRipple(e);
+      const unrevealedIndices = revealed.map((r, idx) => r ? null : idx).filter(v => v !== null);
+      if (unrevealedIndices.length === 0) {
         resetStage();
-        setTimeout(() => autoPickStar(), 300);
-        return;
+        setTimeout(() => revealStar(Math.floor(Math.random() * TOTAL_STARS)), 300);
+      } else {
+        const randomIndex = unrevealedIndices[Math.floor(Math.random() * unrevealedIndices.length)];
+        revealStar(randomIndex);
       }
-
-      const randomIdx = unrevealed[Math.floor(Math.random() * unrevealed.length)];
-      revealStar(randomIdx);
     }
 
     function resetStage(e) {
-      if (e) createRipple(e);
-      playSound('shuffle');
+      if (e) playSound('shuffle');
       initStarValues();
-
-      const grid = document.getElementById('starGrid');
-      grid.style.opacity = '0';
-      grid.style.transform = 'scale(0.95)';
-      grid.style.transition = 'all 0.2s ease-out';
-
-      setTimeout(() => {
-        renderGrid();
-        grid.style.opacity = '1';
-        grid.style.transform = 'scale(1)';
-      }, 200);
+      renderGrid();
+      document.getElementById('stageLabel').innerText = "STAGE: 6 BASIC COLOR STARS READY";
     }
 
-    function animateVaultCounter() {
-      const vaultElem = document.getElementById('vaultBalance');
+    function updateVaultDisplay() {
+      const duration = 500;
       const start = displayedVault;
       const end = totalVault;
-      const duration = 500;
       const startTime = performance.now();
 
-      function update(currentTime) {
+      function animate(currentTime) {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
         displayedVault = start + (end - start) * progress;
-        vaultElem.innerText = `$${displayedVault.toFixed(2)}`;
-
-        if (progress < 1) {
-          requestAnimationFrame(update);
-        } else {
-          displayedVault = end;
-          vaultElem.innerText = `$${end.toFixed(2)}`;
-        }
+        document.getElementById('vaultBalance').innerText = `$${displayedVault.toFixed(2)}`;
+        if (progress < 1) requestAnimationFrame(animate);
       }
-
-      requestAnimationFrame(update);
+      requestAnimationFrame(animate);
     }
 
-    function updateDashboardStats() {
+    function updateStatsUI() {
       document.getElementById('statPicks').innerText = totalPicks;
       document.getElementById('statWins').innerText = winsCount;
       document.getElementById('statJackpots').innerText = jackpotsCount;
     }
 
-    function pushHistory(prize, starColorName) {
+    function addToHistory(colorName, val) {
       const historyLog = document.getElementById('historyLog');
-      history.unshift({ prize, color: starColorName });
-      if (history.length > 5) history.pop();
+      if (history.length === 0) historyLog.innerHTML = '';
 
-      historyLog.innerHTML = history.map(item => {
-        const val = item.prize;
-        let style = "border-emerald-500/40 bg-emerald-950/30 text-emerald-400";
-        let label = `+$${val.toFixed(2)}`;
-        if (val === 0) {
-          style = "border-slate-800 bg-black/60 text-slate-500";
-          label = "$0.00";
-        } else if (val === 3) {
-          style = "border-yellow-500/60 bg-yellow-950/40 text-yellow-400 font-bold shadow-[0_0_15px_rgba(250,204,21,0.3)]";
-          label = `+$${val.toFixed(2)} ⭐`;
-        }
+      const item = document.createElement('div');
+      item.className = "flex justify-between items-center bg-black/50 p-2 rounded-xl border border-red-500/20 text-xs animate-fade-in";
+      
+      let textCol = 'text-emerald-400';
+      if (val === 2) textCol = 'text-blue-400';
+      if (val === 3) textCol = 'text-purple-400';
+      if (val === 4) textCol = 'text-yellow-400';
 
-        return `
-          <div class="flex items-center justify-between text-xs p-2.5 rounded-xl border ${style} font-orbitron transition-all">
-            <span class="flex items-center gap-1.5">
-              <span>⭐</span>
-              ${item.color}
-            </span>
-            <span class="font-black">${label}</span>
-          </div>
-        `;
-      }).join('');
+      item.innerHTML = `
+        <span class="font-bold text-slate-300 flex items-center gap-1.5">
+          <span class="text-xs">⭐</span> ${colorName}
+        </span>
+        <span class="font-orbitron font-black ${textCol}">+$${val.toFixed(2)}</span>
+      `;
+
+      historyLog.prepend(item);
+      history.unshift({ colorName, val });
+      if (historyLog.children.length > 5) historyLog.removeChild(historyLog.lastChild);
     }
 
-    function openWinModal(badgeText, title, prize, colorClass, faceSvg) {
+    function openWinModal(starDef, val) {
       const modal = document.getElementById('winModal');
-      const card = document.getElementById('winModalCard');
-      document.getElementById('winBadgeText').innerText = badgeText;
-      document.getElementById('modalTitle').innerText = title;
-      document.getElementById('modalStarAvatar').innerHTML = faceSvg;
+      const modalCard = document.getElementById('winModalCard');
+      const modalStarAvatar = document.getElementById('modalStarAvatar');
+      const modalPrize = document.getElementById('modalPrize');
 
-      const prizeElem = document.getElementById('modalPrize');
-      prizeElem.innerText = `$${prize.toFixed(2)}`;
-      prizeElem.className = `font-orbitron text-5xl font-black ${colorClass} filter drop-shadow-[0_0_15px_rgba(255,255,255,0.8)]`;
+      modalStarAvatar.innerHTML = starDef.faceSvg;
+      modalPrize.innerText = `$${val.toFixed(2)}`;
 
       modal.classList.remove('hidden');
       setTimeout(() => {
         modal.classList.remove('opacity-0');
-        card.classList.remove('scale-90');
-        card.classList.add('scale-100');
+        modalCard.classList.remove('scale-90');
       }, 10);
     }
 
     function closeWinModal(e) {
       if (e) createRipple(e);
       const modal = document.getElementById('winModal');
-      const card = document.getElementById('winModalCard');
-      card.classList.remove('scale-100');
-      card.classList.add('scale-90');
+      const modalCard = document.getElementById('winModalCard');
+
       modal.classList.add('opacity-0');
-      setTimeout(() => modal.classList.add('hidden'), 300);
+      modalCard.classList.add('scale-90');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 300);
     }
 
     function togglePaytableModal(e) {
       if (e) createRipple(e);
-      document.getElementById('paytableModal').classList.toggle('hidden');
+      const modal = document.getElementById('paytableModal');
+      modal.classList.toggle('hidden');
     }
 
-    function spawnSparkles(x, y, isBig) {
-      if (typeof confetti === 'function') {
-        confetti({
-          particleCount: isBig ? 90 : 40,
-          spread: isBig ? 100 : 60,
-          origin: { x, y },
-          colors: ['#ef4444', '#3b82f6', '#facc15', '#10b981', '#a855f7', '#f97316']
-        });
-      }
+    // Laser Background Animation
+    const canvas = document.getElementById('laserCanvas');
+    const ctx = canvas.getContext('2d');
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
     }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
 
-    function triggerCoinRain() {
-      if (typeof confetti !== 'function') return;
-      const duration = 2 * 1000;
-      const end = Date.now() + duration;
+    let lasers = Array.from({ length: 8 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      length: Math.random() * 80 + 40,
+      speed: Math.random() * 1.5 + 0.5,
+      angle: Math.random() * Math.PI * 2
+    }));
 
-      (function frame() {
-        confetti({
-          particleCount: 6,
-          angle: 60,
-          spread: 55,
-          origin: { x: 0 },
-          colors: ['#ef4444', '#3b82f6', '#facc15']
-        });
-        confetti({
-          particleCount: 6,
-          angle: 120,
-          spread: 55,
-          origin: { x: 1 },
-          colors: ['#10b981', '#a855f7', '#f97316']
-        });
+    function animateLasers() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      lasers.forEach(l => {
+        l.x += Math.cos(l.angle) * l.speed;
+        l.y += Math.sin(l.angle) * l.speed;
 
-        if (Date.now() < end) requestAnimationFrame(frame);
-      }());
-    }
+        if (l.x < 0 || l.x > canvas.width || l.y < 0 || l.y > canvas.height) {
+          l.x = Math.random() * canvas.width;
+          l.y = Math.random() * canvas.height;
+        }
 
-    function initLaserCanvas() {
-      const canvas = document.getElementById('laserCanvas');
-      const ctx = canvas.getContext('2d');
-      let w = (canvas.width = window.innerWidth);
-      let h = (canvas.height = window.innerHeight);
-
-      window.addEventListener('resize', () => {
-        w = canvas.width = window.innerWidth;
-        h = canvas.height = window.innerHeight;
+        ctx.beginPath();
+        ctx.moveTo(l.x, l.y);
+        ctx.lineTo(l.x - Math.cos(l.angle) * l.length, l.y - Math.sin(l.angle) * l.length);
+        ctx.strokeStyle = 'rgba(239, 68, 68, 0.2)';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
       });
-
-      const particles = Array.from({ length: 45 }, () => ({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        size: Math.random() * 2.5 + 0.5,
-        speedY: Math.random() * 0.4 + 0.1,
-        alpha: Math.random() * 0.6 + 0.2,
-        color: ['#ef4444', '#3b82f6', '#facc15', '#10b981', '#a855f7', '#f97316'][Math.floor(Math.random() * 6)]
-      }));
-
-      function loop() {
-        ctx.clearRect(0, 0, w, h);
-        particles.forEach(p => {
-          p.y -= p.speedY;
-          if (p.y < 0) p.y = h;
-
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-          ctx.fillStyle = p.color;
-          ctx.globalAlpha = p.alpha;
-          ctx.shadowBlur = 8;
-          ctx.shadowColor = p.color;
-          ctx.fill();
-        });
-        ctx.globalAlpha = 1;
-        requestAnimationFrame(loop);
-      }
-      loop();
+      requestAnimationFrame(animateLasers);
     }
+    animateLasers();
 
-    window.onload = function() {
-      initStarValues();
-      renderGrid();
-      initLaserCanvas();
-    };
+    // Start Game
+    initStarValues();
+    renderGrid();
   </script>
 </body>
 </html>
